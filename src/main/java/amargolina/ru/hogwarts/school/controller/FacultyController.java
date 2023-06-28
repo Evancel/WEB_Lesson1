@@ -1,7 +1,6 @@
 package amargolina.ru.hogwarts.school.controller;
 
 import amargolina.ru.hogwarts.school.model.Faculty;
-import amargolina.ru.hogwarts.school.model.Student;
 import amargolina.ru.hogwarts.school.service.FacultyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,10 +46,10 @@ public class FacultyController {
     @PutMapping()
     public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty){
         Faculty editedFaculty = facultyService.updateFaculty(faculty);
-        if(faculty==null){
+        if(editedFaculty==null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(faculty);
+        return ResponseEntity.ok(editedFaculty);
     }
 
     @DeleteMapping("/{id}")

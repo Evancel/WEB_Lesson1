@@ -3,11 +3,15 @@ package amargolina.ru.hogwarts.school.model;
 import java.util.Objects;
 
 public class Faculty {
-    private Long id;
+    private long id;
     private String name;
     private String color;
 
-    public Faculty(Long id, String name, String color) {
+    public Faculty(){
+
+    }
+
+    public Faculty(long id, String name, String color) {
         this.id = id;
         this.name = name;
         this.color = color;

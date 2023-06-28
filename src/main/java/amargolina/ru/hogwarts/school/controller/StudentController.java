@@ -1,18 +1,17 @@
 package amargolina.ru.hogwarts.school.controller;
 
 import amargolina.ru.hogwarts.school.model.Student;
-import amargolina.ru.hogwarts.school.service.StudentService;
+import amargolina.ru.hogwarts.school.service.StudentServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.HashMap;
 
 @RestController
 @RequestMapping("/student")
 public class StudentController {
-    private final StudentService studentService;
-    public StudentController(StudentService service){
+    private final StudentServiceImpl studentService;
+    public StudentController(StudentServiceImpl service){
         this.studentService  = service;
     }
 
@@ -25,7 +24,7 @@ public class StudentController {
         return ResponseEntity.ok(addedStudent);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<Student> getStudent(@PathVariable Long id){
         Student student = studentService.findStudent(id);
         if(student==null){
@@ -34,13 +33,13 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping()
+    @GetMapping("/all")
     public ResponseEntity<Collection<Student>> getAllStudents(){
         return ResponseEntity.ok(studentService.getAllStudents());
     }
 
-    @GetMapping("age/{age}")
-    public ResponseEntity<Collection<Student>> getStudentsWithAge(@PathVariable int age){
+    @GetMapping()
+    public ResponseEntity<Collection<Student>> getStudentsWithAge(@RequestParam(required = false) int age){
         return ResponseEntity.ok(studentService.getStudentsWithAge(age));
     }
 
@@ -53,7 +52,7 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<Student> deleteStudent(@PathVariable Long id){
         Student deletedStudent = studentService.deleteStudent(id);
         if(deletedStudent==null){

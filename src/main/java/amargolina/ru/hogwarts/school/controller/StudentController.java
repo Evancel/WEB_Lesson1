@@ -1,14 +1,14 @@
 package amargolina.ru.hogwarts.school.controller;
 
 import amargolina.ru.hogwarts.school.model.Student;
-import amargolina.ru.hogwarts.school.service.StudentServiceImpl;
+import amargolina.ru.hogwarts.school.service.impl.StudentServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/students")
 public class StudentController {
     private final StudentServiceImpl studentService;
     public StudentController(StudentServiceImpl service){
@@ -24,7 +24,7 @@ public class StudentController {
         return ResponseEntity.ok(addedStudent);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Student> getStudent(@PathVariable Long id){
         Student student = studentService.findStudent(id);
         if(student==null){
@@ -33,13 +33,13 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<Collection<Student>> getAllStudents(){
         return ResponseEntity.ok(studentService.getAllStudents());
     }
 
-    @GetMapping()
-    public ResponseEntity<Collection<Student>> getStudentsWithAge(@RequestParam(required = false) int age){
+    @GetMapping("/age/{age}")
+    public ResponseEntity<Collection<Student>> getStudentsWithAge(@PathVariable int age){
         return ResponseEntity.ok(studentService.getStudentsWithAge(age));
     }
 
@@ -49,16 +49,13 @@ public class StudentController {
         if(student==null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(student);
+        return ResponseEntity.ok(editedStudent);
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Student> deleteStudent(@PathVariable Long id){
-        Student deletedStudent = studentService.deleteStudent(id);
-        if(deletedStudent==null){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(deletedStudent);
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteStudent(@PathVariable Long id){
+        studentService.deleteStudent(id);
+        return ResponseEntity.ok().build();
     }
 
 }

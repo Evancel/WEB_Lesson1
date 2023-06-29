@@ -8,7 +8,7 @@ public interface StudentService {
     Student createStudent(Student student);
     Student findStudent(long id);
     Student updateStudent(Student student);
-    Student deleteStudent(long id);
+    void deleteStudent(long id);
     Collection<Student> getAllStudents();
     Collection<Student> getStudentsWithAge(int age);
 }

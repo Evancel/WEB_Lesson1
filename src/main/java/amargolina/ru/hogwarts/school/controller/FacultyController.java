@@ -34,17 +34,18 @@ public class FacultyController {
         return ResponseEntity.ok(faculty);
     }
 
-    @GetMapping()
-    public ResponseEntity<Collection<Faculty>> getAllFaculties(){
-        return ResponseEntity.ok(facultyService.getAllFaculties());
-    }
 
-    @GetMapping("/color/{color}")
-    public ResponseEntity<Collection<Faculty>> getFacultiesWithColor(@PathVariable String color){
-        if(color==null || color.isBlank()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    @GetMapping()
+    public ResponseEntity<Collection<Faculty>> getFacultiesWithColor(
+            @RequestParam (required = false) String color,
+            @RequestParam(required = false) String name){
+        if(color!=null && !color.isBlank()){
+            return ResponseEntity.ok(facultyService.getFacultiesByColor(color));
         }
-        return ResponseEntity.ok(facultyService.getFacultiesWithColor(color));
+        if((name!=null && !name.isBlank())){
+            return ResponseEntity.ok(facultyService.getFacultiesByName(name));
+        }
+        return ResponseEntity.ok(facultyService.getAllFaculties());
     }
 
     @PutMapping()

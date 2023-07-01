@@ -1,5 +1,6 @@
 package amargolina.ru.hogwarts.school.service.impl;
 
+import amargolina.ru.hogwarts.school.model.Faculty;
 import amargolina.ru.hogwarts.school.model.Student;
 import amargolina.ru.hogwarts.school.repository.StudentsRepository;
 import amargolina.ru.hogwarts.school.service.StudentService;
@@ -44,9 +45,15 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Collection<Student> getStudentsWithAge(int age) {
-        Collection<Student> studentsList = getAllStudents();
-        return studentsList.stream()
-                .filter(e -> e.getAge() == age)
-                .collect(Collectors.toList());
+        return studentsRepository.findByAge(age);
+    }
+
+    @Override
+    public Collection<Student> getStudentsBetweenAge(int minAge, int maxAge) {
+        return studentsRepository.findByAgeBetween(minAge,maxAge);
+    }
+
+    public Faculty getFacultyOfStudent(Long id) {
+        return studentsRepository.findById(id).get().getFaculty();
     }
 }

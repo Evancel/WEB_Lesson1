@@ -1,8 +1,7 @@
 package amargolina.ru.hogwarts.school.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 @Entity
 public class Faculty {
@@ -11,6 +10,8 @@ public class Faculty {
     private long id;
     private String name;
     private String color;
+    @OneToMany(mappedBy="faculty")
+    private Collection<Student> studentCollection;
 
     public Faculty(){
 
@@ -45,6 +46,7 @@ public class Faculty {
     public void setColor(String color) {
         this.color = color;
     }
+
 
     @Override
     public boolean equals(Object o) {

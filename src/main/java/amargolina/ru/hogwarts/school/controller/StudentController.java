@@ -1,5 +1,6 @@
 package amargolina.ru.hogwarts.school.controller;
 
+import amargolina.ru.hogwarts.school.model.Faculty;
 import amargolina.ru.hogwarts.school.model.Student;
 import amargolina.ru.hogwarts.school.service.impl.StudentServiceImpl;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +42,17 @@ public class StudentController {
     @GetMapping("/age/{age}")
     public ResponseEntity<Collection<Student>> getStudentsWithAge(@PathVariable int age){
         return ResponseEntity.ok(studentService.getStudentsWithAge(age));
+    }
+
+    @GetMapping("age_between")
+    public ResponseEntity<Collection<Student>> getStudentsWithAgeBetween(@RequestParam int minAge,
+                                                                         @RequestParam int maxAge){
+        return ResponseEntity.ok(studentService.getStudentsBetweenAge(minAge, maxAge));
+    }
+
+    @GetMapping("/faculty/{id}")
+    public Faculty getFacultyOfStudent(@PathVariable Long id){
+        return studentService.getFacultyOfStudent(id);
     }
 
     @PutMapping()

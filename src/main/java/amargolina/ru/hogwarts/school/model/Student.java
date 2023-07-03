@@ -1,7 +1,13 @@
 package amargolina.ru.hogwarts.school.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.util.Objects;
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Entity
 public class Student {
     @Id
@@ -10,7 +16,7 @@ public class Student {
     private String name;
     private int age;
     @ManyToOne()
-    @JoinColumn(name="faculty_id")
+    //@JoinColumn(name="faculty_id")
     private Faculty faculty;
 
     public Student(){}

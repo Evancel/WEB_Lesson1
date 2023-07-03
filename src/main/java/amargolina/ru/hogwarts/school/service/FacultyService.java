@@ -1,6 +1,7 @@
 package amargolina.ru.hogwarts.school.service;
 
 import amargolina.ru.hogwarts.school.model.Faculty;
+import amargolina.ru.hogwarts.school.model.Student;
 
 import java.util.Collection;
 
@@ -12,4 +13,5 @@ public interface FacultyService {
     Collection<Faculty> getAllFaculties();
     Collection<Faculty> getFacultiesByColor(String color);
     Collection<Faculty> getFacultiesByName(String name);
+    Collection<Student> getStudentsOfTheFaculty(Long id);
 }

@@ -1,8 +1,16 @@
 package amargolina.ru.hogwarts.school.model;
 
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Entity
 public class Faculty {
     @Id
@@ -11,10 +19,10 @@ public class Faculty {
     private String name;
     private String color;
     @OneToMany(mappedBy="faculty")
+    @JsonIgnore
     private Collection<Student> studentCollection;
 
     public Faculty(){
-
     }
 
     public Faculty(long id, String name, String color) {
@@ -47,6 +55,13 @@ public class Faculty {
         this.color = color;
     }
 
+    public Collection<Student> getStudentCollection() {
+        return studentCollection;
+    }
+
+    public void setStudentCollection(Collection<Student> studentCollection) {
+        this.studentCollection = studentCollection;
+    }
 
     @Override
     public boolean equals(Object o) {

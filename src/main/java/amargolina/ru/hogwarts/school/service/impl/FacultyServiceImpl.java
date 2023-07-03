@@ -1,12 +1,12 @@
 package amargolina.ru.hogwarts.school.service.impl;
 
 import amargolina.ru.hogwarts.school.model.Faculty;
+import amargolina.ru.hogwarts.school.model.Student;
 import amargolina.ru.hogwarts.school.repository.FacultiesRepository;
 import amargolina.ru.hogwarts.school.service.FacultyService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -23,7 +23,7 @@ public class FacultyServiceImpl implements FacultyService {
     }
     @Override
     public Faculty findFaculty(long id){
-        return facultiesRepository.findById(id).get();
+        return facultiesRepository.findById(id).orElse(null);
     }
     @Override
     public Faculty updateFaculty(Faculty faculty){
@@ -44,5 +44,9 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public Collection<Faculty> getFacultiesByName(String name) {
         return facultiesRepository.findByNameContainingIgnoreCase(name);
+    }
+
+    public Collection<Student> getStudentsOfTheFaculty(Long id) {
+        return facultiesRepository.findById(id).get().getStudentCollection();
     }
 }

@@ -7,7 +7,6 @@ import amargolina.ru.hogwarts.school.service.StudentService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -25,7 +24,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student findStudent(long id) {
-        return studentsRepository.findById(id).get();
+        return studentsRepository.findById(id).orElse(null);
     }
 
     @Override

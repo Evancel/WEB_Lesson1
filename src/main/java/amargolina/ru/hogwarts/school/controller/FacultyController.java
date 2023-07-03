@@ -1,8 +1,8 @@
 package amargolina.ru.hogwarts.school.controller;
 
 import amargolina.ru.hogwarts.school.model.Faculty;
+import amargolina.ru.hogwarts.school.model.Student;
 import amargolina.ru.hogwarts.school.service.impl.FacultyServiceImpl;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +46,11 @@ public class FacultyController {
             return ResponseEntity.ok(facultyService.getFacultiesByName(name));
         }
         return ResponseEntity.ok(facultyService.getAllFaculties());
+    }
+
+    @GetMapping("/students/{id}")
+    public Collection<Student> getStudentsOfTheFaculty(@PathVariable Long id){
+        return facultyService.getStudentsOfTheFaculty(id);
     }
 
     @PutMapping()

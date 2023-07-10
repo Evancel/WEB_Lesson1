@@ -22,6 +22,12 @@ public class AvatarController {
         this.avatarService=avatarServ;
     }
 
+    @PostMapping(value="/getContentType",consumes= MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String getType(@RequestParam MultipartFile avatar){
+        return avatar.getContentType().toString();
+    }
+
+
     @PostMapping(value="/{studentId}/avatar", consumes= MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadAvatar(@PathVariable Long studentId,
                                                @RequestParam MultipartFile avatar) throws IOException {
@@ -30,7 +36,10 @@ public class AvatarController {
         }
 
         //add a verification about the extension of the file: .jpg, .png
-    //    if(avatar.getContentType()=)
+        if(!avatar.getContentType().equals("image/jpeg")&&!avatar.getContentType().equals("image/png")){
+            return ResponseEntity.badRequest().body("The wrong type of the file.");
+        }
+
         avatarService.uploadAvatar(studentId, avatar);
         return ResponseEntity.ok().build();
     }
@@ -43,7 +52,10 @@ public class AvatarController {
         headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
         headers.setContentLength(avatar.getData().length);
 
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getData());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .headers(headers)
+                .body(avatar.getData());
     }
 
     @GetMapping("/{studentId}/avatar")

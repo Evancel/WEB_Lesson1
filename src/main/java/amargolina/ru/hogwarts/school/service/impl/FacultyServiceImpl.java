@@ -3,6 +3,7 @@ package amargolina.ru.hogwarts.school.service.impl;
 import amargolina.ru.hogwarts.school.model.Faculty;
 import amargolina.ru.hogwarts.school.model.Student;
 import amargolina.ru.hogwarts.school.repository.FacultiesRepository;
+import amargolina.ru.hogwarts.school.repository.StudentsRepository;
 import amargolina.ru.hogwarts.school.service.FacultyService;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +13,11 @@ import java.util.Collection;
 public class FacultyServiceImpl implements FacultyService {
 
     private final FacultiesRepository facultiesRepository;
+    private final StudentsRepository studentsRepository;
 
-    public FacultyServiceImpl(FacultiesRepository facultiesRepository) {
+    public FacultyServiceImpl(FacultiesRepository facultiesRepository, StudentsRepository studentsRepository) {
         this.facultiesRepository = facultiesRepository;
+        this.studentsRepository=studentsRepository;
     }
 
     @Override
@@ -47,6 +50,6 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     public Collection<Student> getStudentsOfTheFaculty(Long id) {
-        return facultiesRepository.findById(id).get().getStudentCollection();
+        return studentsRepository.findAllByFaculty_id(id);
     }
 }

@@ -9,15 +9,25 @@ public class Avatar {
     @Id
     @GeneratedValue
     private Long id;
-
     private String filePath;
     private long fileSize;
     private String MediaType;
-//    @Lob
+   // @Lob
     private byte[] data;
     //аватар уменьшенный в размере
     @OneToOne
     private Student student;
+
+    public Avatar(){}
+
+    public Avatar(Long id, String filePath, long fileSize, String mediaType, byte[] data, Student student) {
+        this.id = id;
+        this.filePath = filePath;
+        this.fileSize = fileSize;
+        MediaType = mediaType;
+        this.data = data;
+        this.student = student;
+    }
 
     public Long getId() {
         return id;

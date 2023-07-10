@@ -7,10 +7,10 @@ import amargolina.ru.hogwarts.school.service.AvatarService;
 import amargolina.ru.hogwarts.school.service.StudentService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import javax.transaction.Transactional;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -34,8 +34,7 @@ public class AvatarServiceImpl implements AvatarService {
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
         Student student = studentService.findStudent(studentId);
 
-        Path filePath = Path.of(pathToAvatar,studentId + "."
-                +getExtension(file.getOriginalFilename()));
+        Path filePath = Path.of(pathToAvatar,studentId + "." +getExtension(file.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
 

@@ -6,6 +6,7 @@ import amargolina.ru.hogwarts.school.repository.AvatarsRepository;
 import amargolina.ru.hogwarts.school.service.AvatarService;
 import amargolina.ru.hogwarts.school.service.StudentService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +17,8 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
@@ -67,6 +70,12 @@ public class AvatarServiceImpl implements AvatarService {
 
     public Avatar findAvatar(Long studentId){
         return avatarsRepository.findByStudentId(studentId).orElse(new Avatar());
+    }
+
+    @Override
+    public List<Avatar> findAllAvatars(Integer pageNumber, Integer pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNumber-1,pageSize);
+        return avatarsRepository.findAll(pageRequest).getContent();
     }
 
     private byte[] generateImagePreview(Path filePath) throws IOException{

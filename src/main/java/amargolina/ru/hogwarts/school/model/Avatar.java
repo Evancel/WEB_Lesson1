@@ -82,12 +82,12 @@ public class Avatar {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Avatar avatar = (Avatar) o;
-        return fileSize == avatar.fileSize && Objects.equals(id, avatar.id) && Objects.equals(filePath, avatar.filePath) && Objects.equals(MediaType, avatar.MediaType) && Arrays.equals(data, avatar.data) && Objects.equals(student, avatar.student);
+        return Objects.equals(id, avatar.id);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, filePath, fileSize, MediaType, student);
+        int result = Objects.hash(id);
         result = 31 * result + Arrays.hashCode(data);
         return result;
     }
@@ -96,11 +96,8 @@ public class Avatar {
     public String toString() {
         return "Avatar{" +
                 "id=" + id +
-                ", filePath='" + filePath + '\'' +
-                ", fileSize=" + fileSize +
-                ", MediaType='" + MediaType + '\'' +
-                ", data=" + Arrays.toString(data) +
                 ", student=" + student +
+                ", data=" + Arrays.toString(data) +
                 '}';
     }
 }

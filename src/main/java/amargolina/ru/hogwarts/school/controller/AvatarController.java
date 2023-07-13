@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 @RestController
 @RequestMapping("/avatars")
@@ -74,6 +75,13 @@ public class AvatarController {
 
             bis.transferTo(bos);
         }
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<Avatar>> getAvatarsOfAllStudents(@RequestParam("page") Integer pageNumber,
+                                                                @RequestParam("size") Integer pageSize){
+        List<Avatar> avatars = avatarService.findAllAvatars(pageNumber,pageSize);
+        return ResponseEntity.ok(avatars);
     }
 
 }

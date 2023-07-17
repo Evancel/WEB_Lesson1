@@ -1,5 +1,7 @@
 package amargolina.ru.hogwarts.school.service.impl;
 
+import amargolina.ru.hogwarts.school.dto.AvatarDto;
+import amargolina.ru.hogwarts.school.mapper.AvatarMapper;
 import amargolina.ru.hogwarts.school.model.Avatar;
 import amargolina.ru.hogwarts.school.model.Student;
 import amargolina.ru.hogwarts.school.repository.AvatarsRepository;
@@ -11,13 +13,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
-import javax.transaction.Transactional;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -28,10 +30,12 @@ public class AvatarServiceImpl implements AvatarService {
     private String pathToAvatar;
     private final AvatarsRepository avatarsRepository;
     private final StudentService studentService;
+    private final AvatarMapper avatarMapper;
 
-    AvatarServiceImpl (AvatarsRepository avatarRep, StudentService studentServ){
+    AvatarServiceImpl (AvatarsRepository avatarRep, StudentService studentServ, AvatarMapper avatarMapper){
         this.avatarsRepository=avatarRep;
         this.studentService=studentServ;
+        this.avatarMapper = avatarMapper;
     }
 
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
@@ -73,9 +77,12 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     @Override
-    public List<Avatar> findAllAvatars(Integer pageNumber, Integer pageSize) {
+    public List<AvatarDto> findAllPreviews(Integer pageNumber, Integer pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber-1,pageSize);
-        return avatarsRepository.findAll(pageRequest).getContent();
+        return avatarsRepository.findAll(pageRequest)
+                .stream()
+                .map(avatar -> avatarMapper.mapToAvatarDto(avatar))
+                .collect(Collectors.toList());
     }
 
     private byte[] generateImagePreview(Path filePath) throws IOException{

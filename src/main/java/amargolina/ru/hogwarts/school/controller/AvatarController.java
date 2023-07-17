@@ -1,5 +1,7 @@
 package amargolina.ru.hogwarts.school.controller;
 
+import amargolina.ru.hogwarts.school.dto.AvatarDto;
+import amargolina.ru.hogwarts.school.mapper.AvatarMapper;
 import amargolina.ru.hogwarts.school.model.Avatar;
 import amargolina.ru.hogwarts.school.service.impl.AvatarServiceImpl;
 import org.springframework.http.HttpHeaders;
@@ -8,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -19,8 +22,10 @@ import java.util.List;
 @RequestMapping("/avatars")
 public class AvatarController {
     private final AvatarServiceImpl avatarService;
-    public AvatarController(AvatarServiceImpl avatarServ){
+
+    public AvatarController(AvatarServiceImpl avatarServ, AvatarMapper avatarMapper1){
         this.avatarService=avatarServ;
+
     }
 
     @PostMapping(value="/getContentType",consumes= MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -78,10 +83,10 @@ public class AvatarController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Avatar>> getAvatarsOfAllStudents(@RequestParam("page") Integer pageNumber,
-                                                                @RequestParam("size") Integer pageSize){
-        List<Avatar> avatars = avatarService.findAllAvatars(pageNumber,pageSize);
-        return ResponseEntity.ok(avatars);
+    public ResponseEntity<List<AvatarDto>> getAllAvatars(@RequestParam("page") Integer pageNumber,
+                                                         @RequestParam("size") Integer pageSize){
+        return ResponseEntity
+                .status(200)
+                .body(avatarService.findAllPreviews(pageNumber,pageSize));
     }
-
 }

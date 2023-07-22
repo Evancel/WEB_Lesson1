@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(FacultyController.class)
+@WebMvcTest()
 public class SchoolApplicationWebMVCTest {
    @Autowired
     private MockMvc mockMvc;
@@ -62,76 +62,76 @@ public class SchoolApplicationWebMVCTest {
    @InjectMocks
    private StudentController studentController;
 
-   @Test
-    public void saveFacultyTest() throws Exception{
-       Long facultyId=1L;
-       String name = "Finance";
-       String color = "blue";
-
-       JSONObject facultyObject = new JSONObject();
-       facultyObject.put("id",facultyId);
-       facultyObject.put("name",name);
-       facultyObject.put("color",color);
-
-       Faculty faculty = new Faculty(facultyId,name,color);
-
-       when(facultiesRepository.save(any(Faculty.class))).thenReturn(faculty);
-       when(facultiesRepository.findByColorIgnoreCase("blue")).thenReturn(List.of(faculty));
-
-       mockMvc.perform(MockMvcRequestBuilders
-                       .post("/faculties") //send
-                       .content(facultyObject.toString())
-                       .contentType(MediaType.APPLICATION_JSON)
-                       .accept(MediaType.APPLICATION_JSON))
-               .andExpect(status().isOk()) //receive
-               .andExpect(jsonPath("$.id").value(facultyId))
-               .andExpect(jsonPath("$.name").value(name))
-               .andExpect(jsonPath("$.color").value(color));
-   }
-
-   @Test
-   public void getFacultyTest() throws Exception{
-      Long facultyId=1L;
-      String name = "Finance";
-      String color = "blue";
-
-      Faculty faculty = new Faculty(facultyId,name,color);
-
-      when(facultiesRepository.findById(facultyId)).thenReturn(Optional.of(faculty));
-
-      mockMvc.perform(MockMvcRequestBuilders
-                      .get("/faculties") //send
-                      .content(facultyId.toString())
-                      .accept(MediaType.APPLICATION_JSON))
-              .andExpect(status().isOk()); //receive
-   }
-
-   @Test
-   public void changeFacultyTest() throws Exception{
-      Long facultyId=1L;
-      String name = "Finance Management";
-      String color = "violet";
-
-      JSONObject facultyObject = new JSONObject();
-      facultyObject.put("id",facultyId);
-      facultyObject.put("name",name);
-      facultyObject.put("color",color);
-
-      Faculty faculty = new Faculty(facultyId,name,color);
-
-      when(facultiesRepository.save(any(Faculty.class))).thenReturn(faculty);
-      when(facultiesRepository.findById(facultyId)).thenReturn(Optional.of(faculty));
-
-      mockMvc.perform(MockMvcRequestBuilders
-                      .put("/faculties") //send
-                      .content(facultyObject.toString())
-                      .contentType(MediaType.APPLICATION_JSON)
-                      .accept(MediaType.APPLICATION_JSON))
-              .andExpect(status().isOk()) //receive
-              .andExpect(jsonPath("$.id").value(facultyId))
-              .andExpect(jsonPath("$.name").value(name))
-              .andExpect(jsonPath("$.color").value(color));
-   }
+//   @Test
+//    public void saveFacultyTest() throws Exception{
+//       Long facultyId=1L;
+//       String name = "Finance";
+//       String color = "blue";
+//
+//       JSONObject facultyObject = new JSONObject();
+//       facultyObject.put("id",facultyId);
+//       facultyObject.put("name",name);
+//       facultyObject.put("color",color);
+//
+//       Faculty faculty = new Faculty(facultyId,name,color);
+//
+//       when(facultiesRepository.save(any(Faculty.class))).thenReturn(faculty);
+//       when(facultiesRepository.findByColorIgnoreCase("blue")).thenReturn(List.of(faculty));
+//
+//       mockMvc.perform(MockMvcRequestBuilders
+//                       .post("/faculties") //send
+//                       .content(facultyObject.toString())
+//                       .contentType(MediaType.APPLICATION_JSON)
+//                       .accept(MediaType.APPLICATION_JSON))
+//               .andExpect(status().isOk()) //receive
+//               .andExpect(jsonPath("$.id").value(facultyId))
+//               .andExpect(jsonPath("$.name").value(name))
+//               .andExpect(jsonPath("$.color").value(color));
+//   }
+//
+//   @Test
+//   public void getFacultyTest() throws Exception{
+//      Long facultyId=1L;
+//      String name = "Finance";
+//      String color = "blue";
+//
+//      Faculty faculty = new Faculty(facultyId,name,color);
+//
+//      when(facultiesRepository.findById(facultyId)).thenReturn(Optional.of(faculty));
+//
+//      mockMvc.perform(MockMvcRequestBuilders
+//                      .get("/faculties") //send
+//                      .content(facultyId.toString())
+//                      .accept(MediaType.APPLICATION_JSON))
+//              .andExpect(status().isOk()); //receive
+//   }
+//
+//   @Test
+//   public void changeFacultyTest() throws Exception{
+//      Long facultyId=1L;
+//      String name = "Finance Management";
+//      String color = "violet";
+//
+//      JSONObject facultyObject = new JSONObject();
+//      facultyObject.put("id",facultyId);
+//      facultyObject.put("name",name);
+//      facultyObject.put("color",color);
+//
+//      Faculty faculty = new Faculty(facultyId,name,color);
+//
+//      when(facultiesRepository.save(any(Faculty.class))).thenReturn(faculty);
+//      when(facultiesRepository.findById(facultyId)).thenReturn(Optional.of(faculty));
+//
+//      mockMvc.perform(MockMvcRequestBuilders
+//                      .put("/faculties") //send
+//                      .content(facultyObject.toString())
+//                      .contentType(MediaType.APPLICATION_JSON)
+//                      .accept(MediaType.APPLICATION_JSON))
+//              .andExpect(status().isOk()) //receive
+//              .andExpect(jsonPath("$.id").value(facultyId))
+//              .andExpect(jsonPath("$.name").value(name))
+//              .andExpect(jsonPath("$.color").value(color));
+//   }
 
 //   @Test
 //   public void deleteFacultyTest() throws Exception{

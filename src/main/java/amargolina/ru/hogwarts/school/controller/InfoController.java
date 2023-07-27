@@ -1,7 +1,5 @@
 package amargolina.ru.hogwarts.school.controller;
 
-
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +11,7 @@ public class InfoController {
     private String port;
 
     @GetMapping("/getPort")
-    public ResponseEntity getPort(){
-        return ResponseEntity.ok(port);
+    public String getPort(){
+        return port;
     }
 }

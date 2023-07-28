@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
-    Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
 
     private final StudentsRepository studentsRepository;
 

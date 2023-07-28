@@ -1,18 +1,18 @@
 package amargolina.ru.hogwarts.school.controller;
 
+import amargolina.ru.hogwarts.school.model.Faculty;
 import amargolina.ru.hogwarts.school.model.Student;
-import amargolina.ru.hogwarts.school.service.StudentService;
+import amargolina.ru.hogwarts.school.service.impl.StudentServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.HashMap;
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/students")
 public class StudentController {
-    private final StudentService studentService;
-    public StudentController(StudentService service){
+    private final StudentServiceImpl studentService;
+    public StudentController(StudentServiceImpl service){
         this.studentService  = service;
     }
 
@@ -39,9 +39,45 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
 
-    @GetMapping("age/{age}")
+    @GetMapping("/age/{age}")
     public ResponseEntity<Collection<Student>> getStudentsWithAge(@PathVariable int age){
         return ResponseEntity.ok(studentService.getStudentsWithAge(age));
+    }
+
+    @GetMapping("age_between")
+    public ResponseEntity<Collection<Student>> getStudentsWithAgeBetween(@RequestParam int minAge,
+                                                                         @RequestParam int maxAge){
+        return ResponseEntity.ok(studentService.getStudentsBetweenAge(minAge, maxAge));
+    }
+
+    @GetMapping("/{studentsId}/faculty")
+    public Faculty getFacultyOfStudent(@PathVariable Long studentsId){
+        return studentService.getFacultyOfStudent(studentsId);
+    }
+
+    @GetMapping("count-of-all-students")
+    public int getCountOfAllStudents(){
+        return studentService.getCountOfAllStudents();
+    }
+
+    @GetMapping("avg_age-of-all-students")
+    public int getAverageAgeOfAllStudents(){
+        return studentService.getAverageAgeOfAllStudents();
+    }
+
+    @GetMapping("last-five-students")
+    public Collection<Student> getLastFiveStudents(){
+        return studentService.getLastFiveStudents();
+    }
+
+    @GetMapping("stream-names-starts-with-A")
+    public Collection<String> getNamesStartingFromA(){
+        return studentService.getNamesStartingFromA();
+    }
+
+    @GetMapping("stream-avg-age-of-students")
+    public ResponseEntity<Double> getAvgAgeOfStudents(){
+        return ResponseEntity.ok(studentService.getAverageAgeOfAllStudentsStream());
     }
 
     @PutMapping()
@@ -50,16 +86,18 @@ public class StudentController {
         if(student==null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(student);
+        return ResponseEntity.ok(editedStudent);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Student> deleteStudent(@PathVariable Long id){
-        Student deletedStudent = studentService.deleteStudent(id);
-        if(deletedStudent==null){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(deletedStudent);
+    public ResponseEntity deleteStudent(@PathVariable Long id){
+        studentService.deleteStudent(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/parallelt-stream")
+    public ResponseEntity<Integer> getNumber(){
+        return ResponseEntity.ok(studentService.getIntegerNumber());
     }
 
 }

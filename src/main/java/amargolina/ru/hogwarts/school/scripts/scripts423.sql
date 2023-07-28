@@ -1,0 +1,6 @@
+SELECT s.name, s.age, f.name FROM student s
+LEFT JOIN faculty f on s.faculty_id = f.id
+WHERE f.color='red';
+
+SELECT s.name, s.age FROM student s
+INNER JOIN avatar a on s.id = a.student_id;

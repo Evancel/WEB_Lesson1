@@ -2,17 +2,17 @@ package amargolina.ru.hogwarts.school.controller;
 
 import amargolina.ru.hogwarts.school.model.Faculty;
 import amargolina.ru.hogwarts.school.model.Student;
-import amargolina.ru.hogwarts.school.service.FacultyService;
+import amargolina.ru.hogwarts.school.service.impl.FacultyServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/faculty")
+@RequestMapping("/faculties")
 public class FacultyController {
-    private final FacultyService facultyService;
-    public FacultyController(FacultyService service){
+    private final FacultyServiceImpl facultyService;
+    public FacultyController(FacultyServiceImpl service){
         this.facultyService = service;
     }
 
@@ -34,31 +34,42 @@ public class FacultyController {
         return ResponseEntity.ok(faculty);
     }
 
+
     @GetMapping()
-    public ResponseEntity<Collection<Faculty>> getAllFaculties(){
+    public ResponseEntity<Collection<Faculty>> getFacultiesWithColor(
+            @RequestParam (required = false) String color,
+            @RequestParam(required = false) String name){
+        if(color!=null && !color.isBlank()){
+            return ResponseEntity.ok(facultyService.getFacultiesByColor(color));
+        }
+        if((name!=null && !name.isBlank())){
+            return ResponseEntity.ok(facultyService.getFacultiesByName(name));
+        }
         return ResponseEntity.ok(facultyService.getAllFaculties());
     }
 
-    @GetMapping("/{color}")
-    public ResponseEntity<Collection<Faculty>> getFacultiesWithColor(@PathVariable String color){
-        return ResponseEntity.ok(facultyService.getFacultiesWithColor(color));
+    @GetMapping("/students/{id}")
+    public Collection<Student> getStudentsOfTheFaculty(@PathVariable Long id){
+        return facultyService.getStudentsOfTheFaculty(id);
+    }
+
+    @GetMapping("/stream-the-longest-faculty-name")
+    public ResponseEntity<String> getTheLongestFacultyName(){
+        return ResponseEntity.ok(facultyService.getTheLongestFacultyName());
     }
 
     @PutMapping()
     public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty){
         Faculty editedFaculty = facultyService.updateFaculty(faculty);
-        if(faculty==null){
+        if(editedFaculty==null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(faculty);
+        return ResponseEntity.ok(editedFaculty);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Faculty> deleteFaculty(@PathVariable Long id){
-        Faculty deletedFaculty = facultyService.deleteFaculty(id);
-        if(deletedFaculty==null){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(deletedFaculty);
+    public ResponseEntity deleteFaculty(@PathVariable Long id){
+        facultyService.deleteFaculty(id);
+        return ResponseEntity.ok().build();
     }
 }

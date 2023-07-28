@@ -70,6 +70,16 @@ public class StudentController {
         return studentService.getLastFiveStudents();
     }
 
+    @GetMapping("stream-names-starts-with-A")
+    public Collection<String> getNamesStartingFromA(){
+        return studentService.getNamesStartingFromA();
+    }
+
+    @GetMapping("stream-avg-age-of-students")
+    public ResponseEntity<Double> getAvgAgeOfStudents(){
+        return ResponseEntity.ok(studentService.getAverageAgeOfAllStudentsStream());
+    }
+
     @PutMapping()
     public ResponseEntity<Student> editStudent(@RequestBody Student student){
         Student editedStudent = studentService.updateStudent(student);
@@ -83,6 +93,11 @@ public class StudentController {
     public ResponseEntity deleteStudent(@PathVariable Long id){
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/parallelt-stream")
+    public ResponseEntity<Integer> getNumber(){
+        return ResponseEntity.ok(studentService.getIntegerNumber());
     }
 
 }

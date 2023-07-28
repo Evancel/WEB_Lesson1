@@ -8,6 +8,7 @@ import amargolina.ru.hogwarts.school.service.FacultyService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Comparator;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -51,5 +52,14 @@ public class FacultyServiceImpl implements FacultyService {
 
     public Collection<Student> getStudentsOfTheFaculty(Long id) {
         return studentsRepository.findAllByFaculty_id(id);
+    }
+
+    public String getTheLongestFacultyName() {
+         String facultyWithTheLongestName = facultiesRepository.findAll()
+                 .stream()
+                 .map(Faculty::getName)
+                 .max(Comparator.comparingInt(String::length))
+                 .orElseGet(null);
+         return facultyWithTheLongestName;
     }
 }

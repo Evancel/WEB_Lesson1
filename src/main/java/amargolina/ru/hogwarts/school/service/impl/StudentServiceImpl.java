@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -64,7 +65,7 @@ public class StudentServiceImpl implements StudentService {
 
     public Faculty getFacultyOfStudent(Long id) {
         logger.info("Finding the faculty of the student with id {}",id);
-        return studentsRepository.findById(id).get().getFaculty();
+        return studentsRepository.findById(id).orElseGet(null).getFaculty();
     }
 
     @Override
@@ -86,4 +87,40 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
+    public Collection<String> getNamesStartingFromA() {
+        Collection<String> namesStartingFromA = studentsRepository.findAll()
+                .stream()
+                .map(s->s.getName().toUpperCase())
+                .filter(s->s.startsWith("A"))
+                .sorted()
+                .collect(Collectors.toList());
+        return namesStartingFromA;
+    }
+
+    public Double getAverageAgeOfAllStudentsStream() {
+        Double averageAge = studentsRepository.findAll().stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElseThrow(NullPointerException::new);
+
+        return averageAge;
+    }
+
+    public Integer getIntegerNumber() {
+
+        //AS_IS
+//        Integer sum = Stream
+//                .iterate(1, a -> a +1)
+//                .parallel()
+//                .limit(1_000_000)
+//                .reduce(0, (a, b) -> a + b);
+
+        //TO_BE
+        Integer sum=0;
+        for(int i=1;i<=1_000_000;i++){
+            sum+=i;
+        }
+        System.out.println(sum);
+        return sum;
+    }
 }

@@ -80,6 +80,18 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getAverageAgeOfAllStudentsStream());
     }
 
+    @GetMapping("threads-all_students")
+    public ResponseEntity getAllStudentsWithThreads(){
+        studentService.getAllStudentsWithThreads();
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("synchronized_threads-all_students")
+    public ResponseEntity getAllStudentsWithThreadsSynchronized(){
+        studentService.getAllStudentsWithThreadsSynchronized();
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping()
     public ResponseEntity<Student> editStudent(@RequestBody Student student){
         Student editedStudent = studentService.updateStudent(student);

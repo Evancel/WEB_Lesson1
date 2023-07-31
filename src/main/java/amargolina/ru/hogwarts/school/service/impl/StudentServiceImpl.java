@@ -6,9 +6,12 @@ import amargolina.ru.hogwarts.school.repository.StudentsRepository;
 import amargolina.ru.hogwarts.school.service.StudentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,6 +19,9 @@ public class StudentServiceImpl implements StudentService {
     private static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
 
     private final StudentsRepository studentsRepository;
+
+    Object flag = new Object();
+    private int count = 0;
 
     public StudentServiceImpl(StudentsRepository studentsRepository) {
         this.studentsRepository = studentsRepository;
@@ -123,4 +129,77 @@ public class StudentServiceImpl implements StudentService {
         System.out.println(sum);
         return sum;
     }
+
+    public void getAllStudentsWithThreads() {
+        List<String> studentsNames = studentsRepository.findAll().stream()
+                .map(Student::getName)
+                .collect(Collectors.toList());
+
+        System.out.println(studentsNames);
+        System.out.println();
+        System.out.println();
+
+        StudentServiceImpl studentService = new StudentServiceImpl(studentsRepository);
+        studentService.printNameOfStudent(studentsNames.get(0));
+        studentService.printNameOfStudent(studentsNames.get(1));
+
+        new Thread(()->{
+            printNameOfStudent(studentsNames.get(2));
+            printNameOfStudent(studentsNames.get(3));
+        }).start();
+
+        new Thread(()->{
+            printNameOfStudent(studentsNames.get(4));
+            printNameOfStudent(studentsNames.get(5));
+        }).start();
+    }
+
+    public void getAllStudentsWithThreadsSynchronized() {
+        List<String> studentsNames = studentsRepository.findAll().stream()
+                .map(Student::getName)
+                .collect(Collectors.toList());
+
+        System.out.println(studentsNames);
+        System.out.println();
+        System.out.println();
+
+        StudentServiceImpl studentService = new StudentServiceImpl(studentsRepository);
+        studentService.printNameOfStudentSynchronizedMethod(studentsNames.get(0));
+        studentService.printNameOfStudentSynchronizedMethod(studentsNames.get(1));
+
+        new Thread(()->{
+            printNameOfStudentSynchronizedMethod(studentsNames.get(2));
+            printNameOfStudentSynchronizedMethod(studentsNames.get(3));
+        }).start();
+
+        new Thread(()->{
+            printNameOfStudentSynchronizedMethod(studentsNames.get(4));
+            printNameOfStudentSynchronizedMethod(studentsNames.get(5));
+        }).start();
+    }
+
+    private void printNameOfStudent(String name){
+        System.out.println("FIO = " + name);
+
+        //для наглядности добавила утяжеление в код, иначе разницы в выводе нет
+        String s="";
+        for(int i=0;i<100_000;i++){
+            s+=i;
+        }
+    }
+
+    private void printNameOfStudentSynchronizedMethod(String name){
+        synchronized (this) {
+            System.out.println("FIO = " + name + ", count = " + count);
+            count++;
+        }
+
+            //для наглядности добавила утяжеление в код, иначе разницы в выводе нет
+            String s = "";
+            for (int i = 0; i < 100_000; i++) {
+                s += i;
+            }
+    }
+
+
 }

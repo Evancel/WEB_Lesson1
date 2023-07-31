@@ -23,4 +23,5 @@ public interface StudentService {
     Collection<String> getNamesStartingFromA();
     Double getAverageAgeOfAllStudentsStream();
     Integer getIntegerNumber();
+    void getAllStudentsWithThreads();
 }
